@@ -5,9 +5,11 @@ from flask import Flask, render_template, request, jsonify
 app = Flask(__name__)
 
 # ROUTES
-@app.route("/")
-def hello():
-    return "Hello World!"
+@app.route('/', methods=['GET'])
+def index():
+    """Show main page where user enters inputs & sees results"""
+
+    return render_template("index.html")
 
 # DEBUGGER STUFF ##########################################################
 
