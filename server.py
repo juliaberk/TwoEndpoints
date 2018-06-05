@@ -1,7 +1,7 @@
 # Cobalt take-home challenge recieved on May 29, 2018
 
-from flask import Flask, render_template, request, jsonify
-
+from flask import Flask, Response, render_template, request, jsonify, json
+from bs4 import BeautifulSoup
 import requests
 
 app = Flask(__name__)
@@ -15,17 +15,33 @@ def index():
 
 @app.route('/parse.json', methods=['GET'])
 def parse():
-    """First endpoint, returns what tag the user enters"""
+    """First endpoint, returns content that matches user input"""
+    # First thing I did was make a GET request for the whole website
+    # When that worked, I JSONified it
+    # After getting the JSON response, I wittled it down to one tag
 
+    tag_value = "h1"
     url = "http://www.cobalt.io"
 
-    # querystring = {}
+    parameters = {"tag": tag_value}
 
-    response = requests.request("GET", url)
+    response = requests.get(url=url, params=parameters)
 
-    tag_result = response.json()
+    # data = response.json()
 
-    return tag_result
+    print(response.url)
+
+    print (response.encoding)
+
+    print(response.status_code)
+
+    json_resp = json.dumps(response)
+
+    # print(json_resp)
+
+    print (json_resp.headers.get("content-type", "unknown"))
+
+    return "testing route"
 
 @app.route('/contains', methods=['GET'])
 def contains():
