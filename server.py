@@ -1,6 +1,7 @@
 # Cobalt take-home challenge recieved on May 29, 2018
 
 from flask import Flask, Response, render_template, request, jsonify, json
+# I am using BeautifulSoup to parse the HTML from the website
 from bs4 import BeautifulSoup
 import requests
 
@@ -15,33 +16,30 @@ def index():
 
 @app.route('/parse.json', methods=['GET'])
 def parse():
-    """First endpoint, returns content that matches user input"""
-    # First thing I did was make a GET request for the whole website
-    # When that worked, I JSONified it
-    # After getting the JSON response, I wittled it down to one tag
+    """First endpoint returns web content that matches user input"""
 
+    # Get input from user
     tag_value = "h1"
-    url = "http://www.cobalt.io"
+    endpoint = "http://www.cobalt.io"
 
+    # Key/value pair of what HTML tag the user entered
     parameters = {"tag": tag_value}
 
-    response = requests.get(url=url, params=parameters)
+    # Make request for the HTML of the website user enters
+    response = requests.get(url=endpoint, params=parameters)
 
-    # data = response.json()
+    # We want the data from the object that is returned
+    data = response.text
 
-    print(response.url)
+    # Here is where we use BeauitfulSoup to parse the data
+    soup = BeautifulSoup(data, "html.parser")
 
-    print (response.encoding)
+    # Sift out just the tags we want
+    tag_html = soup.find(tag_value)
 
-    print(response.status_code)
+    please_work = tag_html.get_text()
 
-    json_resp = json.dumps(response)
-
-    # print(json_resp)
-
-    print (json_resp.headers.get("content-type", "unknown"))
-
-    return "testing route"
+    return jsonify(please_work)
 
 @app.route('/contains', methods=['GET'])
 def contains():
