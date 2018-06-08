@@ -19,31 +19,47 @@ def parse():
     """First endpoint returns web content that matches user input"""
 
     # Get input from user
-    tag_value = "h1"
-    endpoint = "http://www.cobalt.io"
+    tag = request.args.get("tag")
+    endpoint = request.args.get("endpoint")
 
-    # Key/value pair of what HTML tag the user entered
-    parameters = {"tag": tag_value}
+    # Use the Python Requests library to request the html of the input website
+    response = requests.get(url=endpoint)
 
-    # Make request for the HTML of the website user enters
-    response = requests.get(url=endpoint, params=parameters)
+    # We want the data from the Response object that is returned
+    data = response.content
 
-    # We want the data from the object that is returned
-    data = response.text
-
-    # Here is where we use BeauitfulSoup to parse the data
+    # Create an instance of the BeautifulSoup class to parse our html
     soup = BeautifulSoup(data, "html.parser")
 
     # Sift out just the tags we want
-    tag_html = soup.find(tag_value)
+    tag_html = soup.find_all(tag)
 
-    please_work = tag_html.get_text()
+    # please_work = tag_html.get_text()
 
-    return jsonify(please_work)
+    # print please_work
+    #
+    python_set = set()
+
+    innerHTML_dict = dict()
+
+    for item in tag_html:
+        python_set.add(item)
+        innerHTML_dict['innerHTML'] = (item.get_text())
+
+    # jsonify(python_set)
+
+    print innerHTML_dict
+
+    print python_set
+
+    # Sift out just the tags we want
+    # tag_html = soup.find(tag_value)
+    #
+    # please_work = tag_html.get_text()
 
 @app.route('/contains', methods=['GET'])
 def contains():
-    """Second endpoint, returns boolean expression"""
+    """Second endpoint, checks data for user input, returns boolean expression"""
 
     return "containssss"
 

@@ -9,9 +9,15 @@
 
  </head>
  <body>
-   <p> Enter the element you're looking for:
-     <br><input type="text">
-     <input type="submit"></input>
+   <!-- Form to gather user input  -->
+     <!-- I know GET is default -->
+     <form action="/parse.json" method="GET">
+       <p> Enter the website you want to search (ex: www.cobalt.io):
+       <br><input type="text" name="endpoint">
+       <p> Enter the element you're looking for (ex: h1):
+       <br><input type="text" name="tag">
+       <br><input type="submit"></input>
+     </form>
 
   <p> Result:
      <!-- If the tag exists, the JSON goes in the below div -->
