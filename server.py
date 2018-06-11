@@ -19,17 +19,17 @@ def parse():
     """First endpoint returns web content that matches user input"""
 
     # Get input from user
-    tag = request.args.get("tag")
-    endpoint = request.args.get("endpoint")
+    # tag = request.args.get("tag")
+    # endpoint = request.args.get("endpoint")
+    tag = "h1"
+    url = "http://www.cobalt.io"
 
     # Use the Python Requests library to request the html of the input website
-    response = requests.get(url=endpoint)
+    response = requests.get(url="http://www.cobalt.io")
 
-    # We want the data from the Response object that is returned
-    data = response.content
-
-    # Create an instance of the BeautifulSoup class to parse our html
-    soup = BeautifulSoup(data, "html.parser")
+    # We want the content from the Response object that is returned
+    # Create an instance of the BeautifulSoup class to parse out html
+    soup = BeautifulSoup(response.content, "html.parser")
 
     # Sift out just the tags we want
     tag_html = soup.find_all(tag)
@@ -37,31 +37,27 @@ def parse():
     # please_work = tag_html.get_text()
 
     # print please_work
-    #
-    python_set = set()
-
-    innerHTML_dict = dict()
 
     for item in tag_html:
-        python_set.add(item)
-        innerHTML_dict['innerHTML'] = (item.get_text())
-
-    # jsonify(python_set)
-
-    print innerHTML_dict
-
-    print python_set
+        print item
 
     # Sift out just the tags we want
     # tag_html = soup.find(tag_value)
     #
     # please_work = tag_html.get_text()
+    return "ok cool"
 
-@app.route('/contains', methods=['GET'])
+@app.route('/contains.json', methods=['GET'])
 def contains():
     """Second endpoint, checks data for user input, returns boolean expression"""
+    # Get input from user
+    tag = request.args.get("tag")
+    endpoint = request.args.get("endpoint")
+    text = request.args.get("text")
 
-    return "containssss"
+
+
+    return "This route works yay"
 
 # DEBUGGER STUFF ##########################################################
 

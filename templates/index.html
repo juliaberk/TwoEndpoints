@@ -9,8 +9,7 @@
 
  </head>
  <body>
-   <!-- Form to gather user input  -->
-     <!-- I know GET is default -->
+   <!-- Form for first Route -->
      <form action="/parse.json" method="GET">
        <p> Enter the website you want to search (ex: www.cobalt.io):
        <br><input type="text" name="endpoint">
@@ -23,6 +22,16 @@
      <!-- If the tag exists, the JSON goes in the below div -->
      <br><div id="results"></div>
 
+
+     <form action="/contains.json" method="GET">
+       <p> Enter the website you want to search (ex: www.cobalt.io):
+       <br><input type="text" name="endpoint">
+       <p> Enter the element you're looking for (ex: h1):
+       <br><input type="text" name="tag">
+       <p> What text are you looking for?
+       <br><input type="text" name="text">
+       <br><input type="submit"></input>
+     </form>
   <p>Element found?:
     <!-- Output goes in the div below-->
     <br><div id="boolean"></div>
