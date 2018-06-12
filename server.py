@@ -7,6 +7,12 @@ import requests
 
 app = Flask(__name__)
 
+# CLASSES
+class ReturnedTags:
+    """ The content of the given tag on a page """
+    innerHTML = None
+    outerHTML = None
+
 # ROUTES
 @app.route('/', methods=['GET'])
 def index():
@@ -34,17 +40,11 @@ def parse():
     # Sift out just the tags we want
     tag_html = soup.find_all(tag)
 
-    # please_work = tag_html.get_text()
-
-    # print please_work
-
+    # print list(tag_html)
     for item in tag_html:
+        print item.get_text()
         print item
 
-    # Sift out just the tags we want
-    # tag_html = soup.find(tag_value)
-    #
-    # please_work = tag_html.get_text()
     return "ok cool"
 
 @app.route('/contains.json', methods=['GET'])
@@ -54,6 +54,8 @@ def contains():
     tag = request.args.get("tag")
     endpoint = request.args.get("endpoint")
     text = request.args.get("text")
+
+    response = requests.get(url="http://www.cobalt.io")
 
 
 
