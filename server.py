@@ -44,6 +44,7 @@ def parse():
     for item in tag_html:
         print item.get_text()
         print item
+    # SHould I make a class so this outputs the way I want?
 
     return "ok cool"
 
