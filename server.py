@@ -25,9 +25,9 @@ def parse():
     """First endpoint returns web content that matches user input"""
 
     # Get input from user
-    # tag = request.args.get("tag")
+    tag = request.args.get("tag")
     # endpoint = request.args.get("endpoint")
-    tag = "h1"
+    # tag = "h1"
     url = "http://www.cobalt.io"
 
     # Use the Python Requests library to request the html of the input website
@@ -40,13 +40,21 @@ def parse():
     # Sift out just the tags we want
     tag_html = soup.find_all(tag)
 
-    # print list(tag_html)
-    for item in tag_html:
-        print item.get_text()
-        print item
-    # SHould I make a class so this outputs the way I want?
+    # Here is what we will ultimately output as JSON:
+    output = {tag : []}
+    # output[tag] = [{}]
 
-    return "ok cool"
+
+    for item in tag_html:
+        # initialize empty dictionary
+        dict = {}
+        dict['innerText'] = (item.get_text())
+        dict['innerHtml'] = ""
+        # Add this dict to the list of dictionaries
+        output[tag] = dict
+        # print item
+
+    return jsonify(output)
 
 @app.route('/contains.json', methods=['GET'])
 def contains():
