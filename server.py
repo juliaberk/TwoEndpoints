@@ -42,8 +42,15 @@ def parse():
 
     # Here is what we will ultimately output as JSON:
     output = {tag : []}
-    # output[tag] = [{}]
-
+    # You'll notice that the tag has quotes around it, for
+    # example, "h1" instead of h1 like in the sample input from the prompt
+    # From my research, JSON keys should be surrounded by quotes
+    #
+    # Source:
+    # https://stackoverflow.com/questions/949449/json-spec-does-the-key-have-to-be-surrounded-with-quotes/949476#949476
+    #
+    # https://news.ycombinator.com/item?id=2032729
+    # 
 
     for item in tag_html:
         # initialize empty dictionary
