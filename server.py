@@ -4,14 +4,9 @@ from flask import Flask, Response, render_template, request, jsonify, json
 # I am using BeautifulSoup to parse the HTML from the website
 from bs4 import BeautifulSoup
 import requests
+# import collections
 
 app = Flask(__name__)
-
-# CLASSES
-class ReturnedTags:
-    """ The content of the given tag on a page """
-    innerHTML = None
-    outerHTML = None
 
 # ROUTES
 @app.route('/', methods=['GET'])
@@ -26,40 +21,54 @@ def parse():
 
     # Get input from user
     tag = request.args.get("tag")
-    # endpoint = request.args.get("endpoint")
-    # tag = "h1"
-    url = "http://www.cobalt.io"
-
+    endpoint = "http://" + request.args.get("endpoint")
     # Use the Python Requests library to request the html of the input website
-    response = requests.get(url="http://www.cobalt.io")
+    response = requests.get(url=endpoint)
 
     # We want the content from the Response object that is returned
     # Create an instance of the BeautifulSoup class to parse out html
     soup = BeautifulSoup(response.content, "html.parser")
 
-    # Sift out just the tags we want
+    # Sift out just the instances of the tag we want
     tag_html = soup.find_all(tag)
 
     # Here is what we will ultimately output as JSON:
     output = {tag : []}
+
     # You'll notice that the tag has quotes around it, for
-    # example, "h1" instead of h1 like in the sample input from the prompt
+    # example, "h1" instead of h1 (h1 without quotes is in the sample input from the prompt)
     # From my research, JSON keys should be surrounded by quotes
     #
     # Source:
     # https://stackoverflow.com/questions/949449/json-spec-does-the-key-have-to-be-surrounded-with-quotes/949476#949476
     #
     # https://news.ycombinator.com/item?id=2032729
-    # 
+    #
+
+    # This list will be the value in the dictionary of results
+    # Example: h1: [result list]
+    result_list = []
+
+    # For Python, I had to make a workaround for the output.
+    # Each time the loop runs, a blank copy of this dictionary is made
+    # for the results to be appended to.
+    #
+    # Source:
+    # https://stackoverflow.com/questions/35830612/how-to-create-a-new-dictionary-in-for-loop
+    #
+
+    dict_template = {}
 
     for item in tag_html:
-        # initialize empty dictionary
-        dict = {}
-        dict['innerText'] = (item.get_text())
-        dict['innerHtml'] = ""
-        # Add this dict to the list of dictionaries
-        output[tag] = dict
-        # print item
+        # Make a copy of the empty dictionary
+        new = dict_template.copy()
+        new['innerText'] = (item.get_text())
+        new['innerHtml'] = str((item))
+        # Add this dict to the list of dictionaries:
+        result_list.append(new)
+
+    # Once you have list of results, add it to key/value pair of tag
+    output[tag] = result_list
 
     return jsonify(output)
 
@@ -75,7 +84,7 @@ def contains():
 
 
 
-    return "This route works yay"
+    return jsonify("This route works yay")
 
 # DEBUGGER STUFF ##########################################################
 
