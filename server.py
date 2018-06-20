@@ -77,14 +77,25 @@ def contains():
     """Second endpoint, checks data for user input, returns boolean expression"""
     # Get input from user
     tag = request.args.get("tag")
-    endpoint = request.args.get("endpoint")
-    text = request.args.get("text")
+    endpoint = "http://" + request.args.get("endpoint")
+    text = (request.args.get("text"))
 
-    response = requests.get(url="http://www.cobalt.io")
+    # Make the GET request to the website the user entered
+    response = requests.get(url=endpoint)
 
+    # This is where the boolean value will be stored
+    output = {'exists' : ""}
 
+    soup = BeautifulSoup(response.content, "html.parser")
 
-    return jsonify("This route works yay")
+    print (soup.find_all(string=text))
+
+    if text in soup.find_all(string=text):
+        output['exists'] = "true"
+    else:
+        output['exists'] = "false"
+
+    return jsonify(output)
 
 # DEBUGGER STUFF ##########################################################
 
