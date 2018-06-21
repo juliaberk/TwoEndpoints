@@ -4,14 +4,16 @@ from flask import Flask, Response, render_template, request, jsonify, json
 # I am using BeautifulSoup to parse the HTML from the website
 from bs4 import BeautifulSoup
 import requests
-# import collections
 
 app = Flask(__name__)
+
+# I recognize I could make this code more DRY
+# There is an index page with two forms for each route
 
 # ROUTES
 @app.route('/', methods=['GET'])
 def index():
-    """Show main page where user enters inputs & sees results"""
+    """Show main page where user enters inputs"""
 
     return render_template("index.html")
 
@@ -57,10 +59,11 @@ def parse():
     # https://stackoverflow.com/questions/35830612/how-to-create-a-new-dictionary-in-for-loop
     #
 
+    # Instantiang an empty dictionary and making copies of it is how I tackled
+    # making a new dictionary every time the loop runs
     dict_template = {}
 
     for item in tag_html:
-        # Make a copy of the empty dictionary
         new = dict_template.copy()
         new['innerText'] = (item.get_text())
         # The next line is a place I'm having trouble with. ".contents" returns a List
@@ -70,7 +73,7 @@ def parse():
         # Add this dict to the list of dictionaries:
         result_list.append(new)
 
-    # Once you have list of results, add it to key/value pair of tag
+    # Once you have list of dictionaries, add it to key/value pair of tag
     output[tag] = result_list
 
     return jsonify(output)
