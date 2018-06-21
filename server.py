@@ -63,8 +63,10 @@ def parse():
         # Make a copy of the empty dictionary
         new = dict_template.copy()
         new['innerText'] = (item.get_text())
+        # The next line is a place I'm having trouble with. ".contents" returns a List
+        # I'm trying to use .join() to make it a string, but having difficulties
         content_list = item.contents
-        new['innerHtml'] = " ".join(str(content_list))
+        new['innerHtml'] = str(content_list)
         # Add this dict to the list of dictionaries:
         result_list.append(new)
 
@@ -79,16 +81,15 @@ def contains():
     # Get input from user
     tag = request.args.get("tag")
     endpoint = "http://" + request.args.get("endpoint")
-    text = (request.args.get("text"))
+    text = request.args.get("text")
 
     # Make the GET request to the website the user entered
     response = requests.get(url=endpoint)
 
-    # This is where the boolean value will be stored
+    # This is where the boolean value will be stored to display for the user
     output = {'exists' : ""}
 
     soup = BeautifulSoup(response.content, "html.parser")
-
 
     if text in soup.find_all(string=text):
         output['exists'] = "true"
