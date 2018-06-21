@@ -63,7 +63,8 @@ def parse():
         # Make a copy of the empty dictionary
         new = dict_template.copy()
         new['innerText'] = (item.get_text())
-        new['innerHtml'] = str((item))
+        content_list = item.contents
+        new['innerHtml'] = " ".join(str(content_list))
         # Add this dict to the list of dictionaries:
         result_list.append(new)
 
@@ -88,7 +89,6 @@ def contains():
 
     soup = BeautifulSoup(response.content, "html.parser")
 
-    print (soup.find_all(string=text))
 
     if text in soup.find_all(string=text):
         output['exists'] = "true"
